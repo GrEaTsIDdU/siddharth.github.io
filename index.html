@@ -15,28 +15,31 @@
       justify-content: center;
       min-height: 100vh;
       padding: 2rem;
+      overflow: hidden;
     }
 
     h1 {
       font-size: 2rem;
       margin-bottom: 1rem;
+      z-index: 2;
     }
 
     .glitch-img {
       width: 100%;
       max-width: 600px;
       margin-bottom: 2rem;
-      animation: glitch 1.5s steps(2, end) infinite;
+      position: relative;
+      animation: glitch 1.2s infinite;
+      z-index: 1;
     }
 
     @keyframes glitch {
-      0% { transform: translate(0, 0); filter: none; }
-      15% { transform: translate(-4px, 3px); filter: brightness(1.2) contrast(1.5); }
-      30% { transform: translate(3px, -3px); filter: grayscale(100%) hue-rotate(90deg); }
-      45% { transform: translate(-2px, 2px); filter: sepia(1) saturate(2); }
-      60% { transform: translate(2px, -2px); filter: contrast(2) brightness(0.8); }
-      75% { transform: translate(-1px, 1px); filter: hue-rotate(180deg); }
-      100% { transform: translate(0, 0); filter: none; }
+      0% { transform: translate(0); filter: none; }
+      10% { transform: translate(-3px, 2px); filter: hue-rotate(20deg) contrast(1.5); }
+      20% { transform: translate(3px, -2px); filter: grayscale(100%) brightness(1.2); }
+      30% { transform: translate(-2px, 1px); filter: sepia(1) saturate(2); }
+      40% { transform: translate(2px, -1px); filter: contrast(2) hue-rotate(180deg); }
+      50% { transform: translate(0); filter: none; }
     }
 
     .collapse {
@@ -44,8 +47,11 @@
     }
 
     @keyframes collapse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(0.1); opacity: 0; }
+      0%   { transform: scale(1); opacity: 1; filter: none; }
+      25%  { transform: scale(1.5); opacity: 0.8; filter: brightness(1.5) contrast(2); }
+      50%  { transform: scale(2); opacity: 0.6; filter: hue-rotate(90deg) grayscale(1); }
+      75%  { transform: scale(2.5); opacity: 0.3; filter: sepia(1) saturate(3); }
+      100% { transform: scale(3); opacity: 0; filter: blur(4px); }
     }
 
     button {
@@ -56,6 +62,7 @@
       font-weight: bold;
       cursor: pointer;
       margin-top: 1rem;
+      z-index: 2;
     }
   </style>
 </head>
@@ -69,7 +76,8 @@
 
   <script>
     function collapseSkull() {
-      document.getElementById('skullImg').classList.add('collapse');
+      const skull = document.getElementById('skullImg');
+      skull.classList.add('collapse');
     }
   </script>
 </body>
