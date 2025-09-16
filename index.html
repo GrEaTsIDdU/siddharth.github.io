@@ -24,31 +24,80 @@
       z-index: 2;
     }
 
-    .glitch-img {
+    .glitch-container {
+      position: relative;
       width: 100%;
       max-width: 600px;
       margin-bottom: 2rem;
-      position: relative;
-      animation: glitch 0.6s steps(2, end) infinite;
-      z-index: 1;
+      aspect-ratio: 1/1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    @keyframes glitch {
-      0%   { transform: translate(0, 0) scale(1); filter: none; }
-      10%  { transform: translate(-5px, 3px) scale(1.05); filter: hue-rotate(45deg) contrast(2) brightness(1.5); }
-      20%  { transform: translate(4px, -4px) scale(0.95); filter: grayscale(100%) brightness(1.2); }
-      30%  { transform: translate(-3px, 2px) scale(1.1); filter: sepia(1) saturate(3); }
-      40%  { transform: translate(3px, -3px) scale(0.9); filter: invert(1) contrast(2.5); }
-      50%  { transform: translate(-2px, 1px) scale(1.08); filter: hue-rotate(180deg) brightness(0.8); }
-      60%  { transform: translate(2px, -2px) scale(1.02); filter: blur(1px) contrast(1.8); }
-      70%  { transform: translate(-1px, 1px) scale(1.04); filter: grayscale(0.5) hue-rotate(270deg); }
-      80%  { transform: translate(1px, -1px) scale(0.97); filter: brightness(1.3) contrast(2); }
-      90%  { transform: translate(0px, 0px) scale(1.02); filter: sepia(0.8) saturate(2); }
-      100% { transform: translate(0, 0) scale(1); filter: none; }
+    .glitch-img,
+    .glitch-img::before,
+    .glitch-img::after {
+      width: 100%;
+      display: block;
+      position: absolute;
+      left: 0; top: 0;
+      /* prevent pointer events on pseudo elements */
+      pointer-events: none;
+      user-select: none;
+    }
+    .glitch-img {
+      position: relative;
+      animation: glitch-skull-main 0.8s infinite linear alternate-reverse;
+      z-index: 2;
+    }
+    .glitch-img::before,
+    .glitch-img::after {
+      content: '';
+      height: 100%;
+      background: url('websku.png') center/contain no-repeat;
+      opacity: 0.7;
+      z-index: 1;
+    }
+    .glitch-img::before {
+      left: 2px;
+      animation: glitch-skull-1 0.8s infinite linear alternate-reverse;
+      filter: drop-shadow(-2px 0 2px #ff00c8);
+      mix-blend-mode: lighten;
+    }
+    .glitch-img::after {
+      left: -2px;
+      animation: glitch-skull-2 0.8s infinite linear alternate-reverse;
+      filter: drop-shadow(2px 0 2px #00fff9);
+      mix-blend-mode: lighten;
+    }
+
+    @keyframes glitch-skull-main {
+      0%   { filter: none; }
+      20%  { filter: contrast(2) brightness(1.2); }
+      45%  { filter: hue-rotate(25deg) invert(0.2); }
+      60%  { filter: grayscale(0.3) brightness(1.5); }
+      100% { filter: none; }
+    }
+    @keyframes glitch-skull-1 {
+      0%   { transform: translate(-2px, 0) scale(1.01); opacity: 0.5;}
+      15%  { transform: translate(-8px, -2px) scale(1.04) skewY(1deg); opacity: 0.9;}
+      31%  { transform: translate(1px, 1px) scale(1) skewY(-1deg); opacity: 0.7;}
+      48%  { transform: translate(-5px, 2px) scale(1.02); opacity: 0.6;}
+      70%  { transform: translate(-2px, -4px) scale(1.04) skewX(-2deg); opacity: 1;}
+      100% { transform: translate(-2px, 0) scale(1.01); opacity: 0.5;}
+    }
+    @keyframes glitch-skull-2 {
+      0%   { transform: translate(2px, 0) scale(1.01); opacity: 0.7;}
+      17%  { transform: translate(8px, 2px) scale(1.05) skewY(-1deg); opacity: 0.85;}
+      36%  { transform: translate(-1px, -1px) scale(1.01) skewY(2deg); opacity: 0.75;}
+      59%  { transform: translate(5px, -2px) scale(1.03); opacity: 0.7;}
+      81%  { transform: translate(2px, 4px) scale(1.02) skewX(3deg); opacity: 0.9;}
+      100% { transform: translate(2px, 0) scale(1.01); opacity: 0.7;}
     }
 
     .collapse {
-      animation: collapse 2s ease-in-out forwards;
+      animation: collapse 2s ease-in-out forwards !important;
     }
 
     @keyframes collapse {
@@ -74,8 +123,10 @@
 <body>
   <h1>Go explore!</h1>
 
-  <!-- Glitched Skull Image -->
-  <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull" />
+  <!-- Glitch Skull Image Effect -->
+  <div class="glitch-container">
+    <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull" />
+  </div>
 
   <button onclick="collapseSkull()">Collapse Skull</button>
 
