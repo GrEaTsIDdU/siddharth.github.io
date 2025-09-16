@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Siddharth | Go Explore</title>
+  <title>Siddharth | Glitch Skull</title>
   <style>
     body {
       background-color: #0d0d0d;
@@ -12,6 +12,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
       padding: 2rem;
     }
 
@@ -20,15 +22,21 @@
       margin-bottom: 1rem;
     }
 
-    .skull {
-      font-size: 0.8rem;
-      white-space: pre;
-      animation: flash 1s infinite;
+    .glitch-img {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 2rem;
+      animation: glitch 1.5s steps(2, end) infinite;
     }
 
-    @keyframes flash {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    @keyframes glitch {
+      0% { transform: translate(0, 0); filter: none; }
+      15% { transform: translate(-4px, 3px); filter: brightness(1.2) contrast(1.5); }
+      30% { transform: translate(3px, -3px); filter: grayscale(100%) hue-rotate(90deg); }
+      45% { transform: translate(-2px, 2px); filter: sepia(1) saturate(2); }
+      60% { transform: translate(2px, -2px); filter: contrast(2) brightness(0.8); }
+      75% { transform: translate(-1px, 1px); filter: hue-rotate(180deg); }
+      100% { transform: translate(0, 0); filter: none; }
     }
 
     .collapse {
@@ -41,39 +49,27 @@
     }
 
     button {
-      margin-top: 2rem;
       background: #00ff99;
       color: #0d0d0d;
       border: none;
       padding: 0.5rem 1rem;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 1rem;
     }
   </style>
 </head>
 <body>
   <h1>Go explore!</h1>
 
-  <pre id="skull" class="skull">
-           ______
-        .-'      '-.
-       /            \
-      |              |
-      |,  .-.  .-.  ,|
-      | )(_o/  \o_)( |
-      |/     /\     \|
-      (_     ^^     _)
-       \__|IIIIII|__/
-        | \IIIIII/ |
-        \          /
-         `--------`
-  </pre>
+  <!-- Glitched Skull Image -->
+  <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull" />
 
   <button onclick="collapseSkull()">Collapse Skull</button>
 
   <script>
     function collapseSkull() {
-      document.getElementById('skull').classList.add('collapse');
+      document.getElementById('skullImg').classList.add('collapse');
     }
   </script>
 </body>
