@@ -23,6 +23,7 @@
       padding: 0;
       background: var(--bg);
     }
+    
     body {
       min-height: 100vh;
       display: flex;
@@ -255,6 +256,30 @@
     // Dynamic year for copyright
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
+  <script>
+  function collapseSkull() {
+    const skull = document.getElementById('skullImg');
+    const sound = document.getElementById('collapseSound');
+
+    if (sound && sound.readyState >= 2) {
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    }
+
+    skull.classList.add('collapse');
+    skull.addEventListener('animationend', function handler() {
+      skull.classList.remove('collapse');
+      skull.removeEventListener('animationend', handler);
+    });
+  }
+
+  document.querySelector('.header h1').addEventListener('click', () => {
+    collapseSkull();
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+  <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
 </body>
 </html>
   
