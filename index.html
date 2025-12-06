@@ -4,100 +4,108 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siddharth | Glitch Skull</title>
-  <meta name="description" content="Glitch Skull - Tactical portfolio by Siddharth." />
+  <meta name="description" content="Glitch Skull - Tactical creative web art by Siddharth." />
   <link rel="icon" href="websku.png" type="image/png" />
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
+    /* Background container */
+    #bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;   /* behind content */
+      background: #000;
+    }
+
     :root {
       --primary: #00ff99;
       --bg: #0a0a0d;
       --accent1: #ff0055;
       --accent2: #00d4ff;
+      --skull-size: clamp(240px, 40vw, 420px);
+      --btn-bg: linear-gradient(90deg, var(--primary) 0%, var(--accent2) 100%);
+      --btn-shadow: 0 3px 24px 0 rgba(0,255,153,0.25);
       --font-main: 'Fira Mono', 'Menlo', 'Consolas', monospace;
     }
+
     html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
       background: var(--bg);
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       font-family: var(--font-main);
       color: var(--primary);
+      overflow-x: hidden;
+      position: relative;
+      animation: fadeIn 1.2s ease-out both;
     }
-    .header {
-      text-align: center;
-      margin-top: 2rem;
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.95) translateY(20px);}
+      100% { opacity: 1; transform: none;}
     }
+
+    .header { text-align: center; margin-bottom: 2rem; z-index: 2; }
     .header h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
+      font-size: 3rem; font-weight: 900; margin: 0;
+      background: linear-gradient(90deg, var(--primary), var(--accent2) 60%, var(--accent1) 100%);
+      color: transparent; -webkit-background-clip: text; background-clip: text;
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 1px 8px rgba(0,255,153,0.25));
+      animation: glow 2.5s infinite alternate;
+      cursor: pointer; user-select: none;
     }
-    .header p {
-      font-size: 1.1rem;
-      color: #b2ffe0;
-      font-weight: 500;
-      margin: 0;
-    }
+    .header p { margin: 1rem 0 0 0; font-size: 1.2rem; color: #b2ffe0; opacity: 0.9; font-weight: 500; }
+    @keyframes glow { from { filter: drop-shadow(0 0 8px var(--primary)); } to { filter: drop-shadow(0 0 24px var(--accent2)); } }
+
     .glitch-container {
-      width: 320px;
-      margin: 2rem auto;
-      border-radius: 1rem;
-      background: #1a1a1a;
-      padding: 1rem;
-      box-shadow: 0 0 0 1px #00ff9944;
+      position: relative; width: var(--skull-size); height: var(--skull-size);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2rem; border-radius: 1rem;
+      box-shadow: 0 8px 48px 0 #00ff9922, 0 0 0 1.5px #00ff9944 inset;
+      background: linear-gradient(135deg, #1a1a1a 80%, #2a2a3a 100%);
+      overflow: hidden;
     }
-    .glitch-img {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-      object-fit: contain;
-    }
+    .glitch-img { width: 100%; height: 100%; object-fit: contain; }
+
     .action-btn {
-      display: block;
-      margin: 1.5rem auto;
-      padding: 0.6rem 1.8rem;
-      font-size: 1rem;
-      font-weight: 600;
-      background: var(--accent2);
-      color: #111;
-      border: none;
-      border-radius: 1.5rem;
-      cursor: pointer;
+      display: inline-block; padding: 0.8rem 2.4rem; font-size: 1.1rem; font-weight: 700;
+      border: none; border-radius: 2rem; background: var(--btn-bg); color: #111;
+      box-shadow: var(--btn-shadow); cursor: pointer; transition: transform 0.2s;
     }
+    .action-btn:active { transform: scale(0.95); }
+
     #about {
-      max-width: 640px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: #151515;
-      border-radius: 1rem;
-      text-align: center;
+      max-width: 720px; margin: 2rem auto; padding: 1.5rem;
+      background: #151515; border-radius: 1rem;
+      box-shadow: 0 0 24px rgba(0,255,153,0.15); text-align: center;
     }
-    #about h2 {
-      font-size: 1.6rem;
-      color: var(--accent2);
-      margin-bottom: 0.5rem;
-    }
-    #about p {
-      font-size: 1.05rem;
-      color: #e0ffe0;
-      margin: 0;
-    }
-    footer {
-      text-align: center;
-      margin: 2rem 0;
-      font-size: 0.9rem;
-      color: #b2ffe055;
-    }
+    #about h2 { font-size: 1.8rem; margin-bottom: 1rem; color: var(--accent2); }
+    #about p { font-size: 1.1rem; line-height: 1.6; color: #e0ffe0; }
+
+    footer { text-align:center; margin-top:2rem; color:#b2ffe055; font-size:.95rem; }
   </style>
 </head>
 <body>
+  <!-- Background container -->
+  <div id="bg"></div>
+
   <div class="header">
-    <h1>Glitch Skull</h1>
-    <p>Siddharth — Creative Coder</p>
+    <h1 title="Glitch Skull">Glitch Skull</h1>
+    <p><span style="color:var(--accent1); font-weight:600;">Siddharth</span> — Creative Coder</p>
   </div>
   <main>
     <div class="glitch-container">
-      <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull by Siddharth" />
+      <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull by Siddharth" draggable="false" />
     </div>
     <button class="action-btn" onclick="collapseSkull()">Collapse Skull</button>
     <section id="about">
@@ -106,15 +114,65 @@
     </section>
   </main>
   <footer>
-    &copy; <span id="year"></span> Siddharth. Crafted with precision.
+    &copy; <span id="year"></span> Siddharth. Crafted with ❤️
   </footer>
+
+  <!-- Punisher Theme -->
+  <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
+
+  <!-- Skull collapse + audio -->
   <script>
     function collapseSkull() {
       const skull = document.getElementById('skullImg');
+      const sound = document.getElementById('collapseSound');
+      if (sound && sound.readyState >= 2) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      }
       skull.style.transform = 'scale(0.9)';
       setTimeout(() => skull.style.transform = 'scale(1)', 300);
     }
+    document.querySelector('.header h1').addEventListener('click', () => collapseSkull());
     document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Three.js bitstream background -->
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({antialias:true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById('bg').appendChild(renderer.domElement);
+
+    const particles = new THREE.BufferGeometry();
+    const particleCount = 2000;
+    const positions = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      positions[i*3] = (Math.random() - 0.5) * 200;
+      positions[i*3+1] = (Math.random() - 0.5) * 200;
+      positions[i*3+2] = (Math.random() - 0.5) * 200;
+    }
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const material = new THREE.PointsMaterial({ color: 0x00ff99, size: 0.7, transparent: true });
+    const pointCloud = new THREE.Points(particles, material);
+    scene.add(pointCloud);
+
+    camera.position.z = 50;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      pointCloud.rotation.y += 0.0015;
+      pointCloud.rotation.x += 0.0007;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
   </script>
 </body>
 </html>
