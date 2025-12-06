@@ -4,17 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siddharth | Glitch Skull</title>
-  <meta name="description" content="Glitch Skull - Interactive creative web art by Siddharth." />
+  <meta name="description" content="Glitch Skull - Tactical creative web art by Siddharth." />
   <link rel="icon" href="websku.png" type="image/png" />
   <style>
     :root {
-      --green: #00ff99;
-      --bg: #101014;
-      --accent1: #ff00c8;
-      --accent2: #00fff9;
+      --primary: #00ff99;
+      --bg: #0a0a0d;
+      --accent1: #ff0055;
+      --accent2: #00d4ff;
       --skull-size: clamp(240px, 40vw, 420px);
-      --btn-bg: linear-gradient(90deg, var(--green) 0%, var(--accent2) 100%);
-      --btn-shadow: 0 3px 24px 0 rgba(0,255,153,0.15);
+      --btn-bg: linear-gradient(90deg, var(--primary) 0%, var(--accent2) 100%);
+      --btn-shadow: 0 3px 24px 0 rgba(0,255,153,0.25);
       --font-main: 'Fira Mono', 'Menlo', 'Consolas', monospace;
     }
     html, body {
@@ -23,7 +23,6 @@
       padding: 0;
       background: var(--bg);
     }
-    
     body {
       min-height: 100vh;
       display: flex;
@@ -31,46 +30,44 @@
       align-items: center;
       justify-content: center;
       font-family: var(--font-main);
-      color: var(--green);
+      color: var(--primary);
       overflow-x: hidden;
       position: relative;
-      animation: fadeIn 1.2s cubic-bezier(.77,0,.18,1) both;
+      animation: fadeIn 1.2s ease-out both;
     }
     @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.98) translateY(16px);}
+      0% { opacity: 0; transform: scale(0.95) translateY(20px);}
       100% { opacity: 1; transform: none;}
     }
     .header {
       text-align: center;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       z-index: 2;
-      letter-spacing: 0.03em;
     }
     .header h1 {
-      font-size: 2.7rem;
-      font-weight: 800;
+      font-size: 3rem;
+      font-weight: 900;
       margin: 0;
-      background: linear-gradient(90deg, var(--green), var(--accent2) 60%, var(--accent1) 100%);
+      background: linear-gradient(90deg, var(--primary), var(--accent2) 60%, var(--accent1) 100%);
       color: transparent;
       -webkit-background-clip: text;
       background-clip: text;
-      letter-spacing: 0.04em;
-      filter: drop-shadow(0 1px 8px rgba(0,255,153,0.18));
+      letter-spacing: 0.05em;
+      filter: drop-shadow(0 1px 8px rgba(0,255,153,0.25));
       animation: glow 2.5s infinite alternate;
-      transition: filter 0.25s;
       cursor: pointer;
       user-select: none;
     }
     .header p {
       margin: 1rem 0 0 0;
-      font-size: 1.13rem;
+      font-size: 1.2rem;
       color: #b2ffe0;
-      opacity: 0.8;
-      font-weight: 400;
+      opacity: 0.9;
+      font-weight: 500;
       text-shadow: 0 1px 2px #000a;
     }
     @keyframes glow {
-      from { filter: drop-shadow(0 0 8px var(--green)); }
+      from { filter: drop-shadow(0 0 8px var(--primary)); }
       to   { filter: drop-shadow(0 0 24px var(--accent2)); }
     }
     .glitch-container {
@@ -80,206 +77,106 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 2.2rem;
-      user-select: none;
-      border-radius: 2rem;
+      margin-bottom: 2rem;
+      border-radius: 1rem;
       box-shadow: 0 8px 48px 0 #00ff9922, 0 0 0 1.5px #00ff9944 inset;
-      background: linear-gradient(135deg, #222 80%, #30304e 100%);
+      background: linear-gradient(135deg, #1a1a1a 80%, #2a2a3a 100%);
       overflow: hidden;
-      transition: box-shadow 0.22s;
-    }
-    .glitch-img, .glitch-img::before, .glitch-img::after {
-      width: 100%;
-      height: 100%;
-      display: block;
-      position: absolute;
-      left: 0; top: 0;
-      pointer-events: none;
-      user-select: none;
-      object-fit: contain;
     }
     .glitch-img {
-      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
       animation: glitch-skull-main 0.75s infinite linear alternate;
-      z-index: 3;
-      transition: filter .3s;
       filter: drop-shadow(0 2px 12px #00ff9955);
-    }
-    .glitch-img::before, .glitch-img::after {
-      content: '';
-      background: url('websku.png') center/contain no-repeat;
-      opacity: 0.7;
-      z-index: 2;
-    }
-    .glitch-img::before {
-      left: 2px;
-      animation: glitch-skull-1 0.75s infinite linear alternate;
-      filter: drop-shadow(-2.5px 0 3px var(--accent1));
-      mix-blend-mode: lighten;
-    }
-    .glitch-img::after {
-      left: -2px;
-      animation: glitch-skull-2 0.75s infinite linear alternate;
-      filter: drop-shadow(2.5px 0 3px var(--accent2));
-      mix-blend-mode: lighten;
     }
     @keyframes glitch-skull-main {
       0%   { filter: none; }
-      18%  { filter: contrast(2.1) brightness(1.22) hue-rotate(15deg);}
-      38%  { filter: hue-rotate(24deg) invert(0.18);}
-      56%  { filter: grayscale(0.45) brightness(1.41);}
+      25%  { filter: contrast(2) brightness(1.2) hue-rotate(15deg);}
+      50%  { filter: hue-rotate(24deg) invert(0.2);}
+      75%  { filter: grayscale(0.4) brightness(1.4);}
       100% { filter: none; }
-    }
-    @keyframes glitch-skull-1 {
-      0%   { transform: translate(-2px, 0) scale(1.01); opacity: 0.5;}
-      15%  { transform: translate(-8px, -2px) scale(1.04) skewY(1deg); opacity: 0.97;}
-      31%  { transform: translate(1px, 1px) scale(1.011) skewY(-1deg); opacity: 0.82;}
-      48%  { transform: translate(-5px, 2px) scale(1.02); opacity: 0.7;}
-      70%  { transform: translate(-2px, -4px) scale(1.04) skewX(-2deg); opacity: 1;}
-      100% { transform: translate(-2px, 0) scale(1.01); opacity: 0.5;}
-    }
-    @keyframes glitch-skull-2 {
-      0%   { transform: translate(2px, 0) scale(1.011); opacity: 0.7;}
-      17%  { transform: translate(8px, 2px) scale(1.05) skewY(-1deg); opacity: 0.8;}
-      36%  { transform: translate(-1px, -1px) scale(1.01) skewY(2deg); opacity: 0.72;}
-      59%  { transform: translate(5px, -2px) scale(1.03); opacity: 0.8;}
-      81%  { transform: translate(2px, 4px) scale(1.02) skewX(3deg); opacity: 0.95;}
-      100% { transform: translate(2px, 0) scale(1.011); opacity: 0.7;}
-    }
-    .collapse {
-      animation: collapse 2s cubic-bezier(.8,0,.18,1) forwards !important;
-      will-change: transform, opacity, filter;
-    }
-    @keyframes collapse {
-      0%   { transform: scale(1); opacity: 1; filter: none; }
-      22%  { transform: scale(1.4); opacity: 0.88; filter: brightness(1.7) contrast(2.5); }
-      44%  { transform: scale(2.1); opacity: 0.5; filter: hue-rotate(120deg) grayscale(1); }
-      69%  { transform: scale(2.6); opacity: 0.22; filter: sepia(1) saturate(3.2); }
-      100% { transform: scale(3.5); opacity: 0; filter: blur(7px); }
     }
     .action-btn {
       display: inline-block;
-      padding: 0.75rem 2.2rem;
-      font-size: 1.12rem;
+      padding: 0.8rem 2.4rem;
+      font-size: 1.1rem;
       font-weight: 700;
       border: none;
-      outline: none;
-      border-radius: 2.2rem;
+      border-radius: 2rem;
       background: var(--btn-bg);
-      color: #172620;
+      color: #111;
       box-shadow: var(--btn-shadow);
       cursor: pointer;
-      transition: background 0.18s, color 0.18s, transform 0.16s;
-      margin-top: 1.5rem;
-      z-index: 2;
-      letter-spacing: 0.03em;
-      position: relative;
-      overflow: hidden;
-      filter: drop-shadow(0 2px 24px #00ff9955);
+      transition: transform 0.2s;
     }
-    .action-btn:active {
-      transform: scale(0.97);
+    .action-btn:active { transform: scale(0.95); }
+    /* About Section */
+    #about {
+      max-width: 720px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: #151515;
+      border-radius: 1rem;
+      box-shadow: 0 0 24px rgba(0,255,153,0.15);
+      text-align: center;
     }
-    .action-btn::after {
-      content: "";
-      position: absolute;
-      left: 50%; top: 50%;
-      transform: translate(-50%, -50%) scale(0);
-      width: 120%; height: 150%;
-      background: radial-gradient(circle, #fff7 20%, transparent 80%);
-      opacity: 0.25;
-      border-radius: 2.5rem;
-      transition: transform 0.4s;
-      pointer-events: none;
-      z-index: 0;
+    #about h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--accent2);
     }
-    .action-btn:focus::after, .action-btn:active::after {
-      transform: translate(-50%, -50%) scale(1.1);
-      transition: transform 0.19s;
+    #about p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #e0ffe0;
     }
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      background: #111;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: linear-gradient(135deg, #191a2c 70%, #00ff9977 100%);
-      border-radius: 5px;
-    }
-    /* Responsive */
-    @media (max-width: 800px) {
-      .glitch-container { --skull-size: 62vw; }
-      .header h1 { font-size: 2.1rem; }
-    }
-    @media (max-width: 420px) {
-      .glitch-container { --skull-size: 85vw; }
-      .header h1 { font-size: 1.33rem; }
-      .action-btn { padding: 0.6rem 1.3rem; font-size: 1rem;}
-    }
-    /* Accessibility: reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    footer {
+      text-align:center;
+      margin-top:2rem;
+      color:#b2ffe055;
+      font-size:.95rem;
     }
   </style>
 </head>
 <body>
   <div class="header">
     <h1 title="Glitch Skull">Glitch Skull</h1>
-    <p>
-      <span style="color:var(--accent1); font-weight:600;">Siddharth</span> &mdash; Creative Coder <span style="font-size:1.15em;">&#128126;</span>
-    </p>
+    <p><span style="color:var(--accent1); font-weight:600;">Siddharth</span> — Creative Coder 👾</p>
   </div>
   <main>
-    <!-- Glitch Skull Image Effect -->
     <div class="glitch-container">
       <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull by Siddharth" draggable="false" />
     </div>
     <button class="action-btn" onclick="collapseSkull()">Collapse Skull</button>
+    <!-- About Me Section -->
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am an ECE engineer exploring Web Development to showcase my projects!</p>
+    </section>
   </main>
-  <footer style="text-align:center; margin-top:2.4rem; color:#b2ffe055; font-size:.98rem; letter-spacing:.012em;">
-    &copy; <span id="year"></span> Siddharth. Crafted with <span style="color:var(--accent1);font-size:1.1em;">&#10084;&#65039;</span>
+  <footer>
+    &copy; <span id="year"></span> Siddharth. Crafted with ❤️
   </footer>
   <script>
-    // Animate collapse and reset after animation
     function collapseSkull() {
       const skull = document.getElementById('skullImg');
+      const sound = document.getElementById('collapseSound');
+      if (sound && sound.readyState >= 2) {
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+      }
       skull.classList.add('collapse');
       skull.addEventListener('animationend', function handler() {
         skull.classList.remove('collapse');
         skull.removeEventListener('animationend', handler);
       });
     }
-    // Header click: fun effect
     document.querySelector('.header h1').addEventListener('click', () => {
       collapseSkull();
     });
-    // Dynamic year for copyright
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-  <script>
-  function collapseSkull() {
-    const skull = document.getElementById('skullImg');
-    const sound = document.getElementById('collapseSound');
-
-    if (sound && sound.readyState >= 2) {
-      sound.currentTime = 0;
-      sound.play().catch(() => {});
-    }
-
-    skull.classList.add('collapse');
-    skull.addEventListener('animationend', function handler() {
-      skull.classList.remove('collapse');
-      skull.removeEventListener('animationend', handler);
-    });
-  }
-
-  document.querySelector('.header h1').addEventListener('click', () => {
-    collapseSkull();
-  });
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-</script>
   <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
 </body>
 </html>
-  
