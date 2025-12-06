@@ -9,9 +9,6 @@
 
   <!-- Three.js core -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- Three.js examples (non-module) for FontLoader and TextGeometry -->
-  <script src="https://threejs.org/examples/js/loaders/FontLoader.js"></script>
-  <script src="https://threejs.org/examples/js/geometries/TextGeometry.js"></script>
 
   <style>
     :root {
@@ -21,7 +18,7 @@
       --accent2: #00d4ff;
       --skull-size: clamp(240px, 40vw, 420px);
       --btn-bg: linear-gradient(90deg, var(--primary) 0%, var(--accent2) 100%);
-      --btn-shadow: 0 3px 24px 0 rgba(0,255,153,0.25);
+      --btn-shadow: 0 3px 24px rgba(0,255,153,0.25);
       --font-main: 'Fira Mono', 'Menlo', 'Consolas', monospace;
     }
 
@@ -45,7 +42,7 @@
       padding-top: 3rem;
     }
 
-    /* Background container holds the WebGL canvas behind content */
+    /* Background container holds WebGL canvas behind content */
     #bg {
       position: fixed;
       top: 0; left: 0;
@@ -70,7 +67,6 @@
 
     .glitch-container {
       width: var(--skull-size);
-      height: auto;
       margin: 2rem auto;
       display: flex;
       align-items: center;
@@ -117,7 +113,6 @@
   </style>
 </head>
 <body>
-  <!-- WebGL background -->
   <div id="bg"></div>
 
   <div class="header">
@@ -140,7 +135,6 @@
     &copy; <span id="year"></span> Siddharth. Crafted with ❤️
   </footer>
 
-  <!-- Punisher Theme -->
   <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
 
   <script>
@@ -157,112 +151,118 @@
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
-  <!-- Three.js 3D binary bitstream (falling 1s and 0s) -->
+  <!-- Three.js 3D bitstream using sprite digits (no external font JSON) -->
   <script>
-    // Scene setup
+    // Setup renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 60;
+    camera.position.z = 80;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setClearColor(0x000000, 1);
-    document.getElementById('bg').appendChild(renderer.domElement);
+    const bg = document.getElementById('bg');
+    bg.appendChild(renderer.domElement);
+    renderer.domElement.style.position = 'fixed';
+    renderer.domElement.style.top = 0;
+    renderer.domElement.style.left = 0;
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.zIndex = -1;
+    renderer.domElement.style.pointerEvents = 'none';
 
-    // Light (optional for better visibility if you switch to non-basic materials)
-    // const light = new THREE.AmbientLight(0xffffff, 0.8);
-    // scene.add(light);
+    // Create a canvas-based texture for digits to avoid font loader CORS
+    function createDigitTexture(char, color = '#ff6f00') {
+      const size = 128;
+      const c = document.createElement('canvas');
+      c.width = size;
+      c.height = size;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0, 0, size, size);
+      ctx.fillStyle = 'rgba(0,0,0,0)';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = color;
+      ctx.font = 'bold 96px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(char, size / 2, size / 2);
+      const tex = new THREE.CanvasTexture(c);
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      tex.needsUpdate = true;
+      return tex;
+    }
 
-    // Parameters
-    const COUNT = 200;       // number of digits
-    const AREA = 120;        // spread in X/Z
-    const TOP = 70;          // spawn height
-    const BOTTOM = -70;      // reset threshold
-    const SPEED_MIN = 0.08;  // min fall speed
-    const SPEED_MAX = 0.24;  // max fall speed
+    const tex1 = createDigitTexture('1', '#ff6f00'); // Bhagva
+    const tex0 = createDigitTexture('0', '#ff6f00');
 
-    const digits = []; // store meshes with velocity
+    function makeSprite(charTex) {
+      const material = new THREE.SpriteMaterial({ map: charTex, transparent: true });
+      const sprite = new THREE.Sprite(material);
+      sprite.scale.set(4, 4, 1); // size of digit
+      return sprite;
+    }
 
-    // Load font and create digits
-    const loader = new THREE.FontLoader();
-    loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font) {
-      const mat = new THREE.MeshBasicMaterial({ color: 0xff6f00 }); // Bhagva orange
+    // Create digit sprites
+    const COUNT = 300;
+    const AREA = 140;
+    const TOP = 90;
+    const BOTTOM = -90;
+    const SPEED_MIN = 0.12;
+    const SPEED_MAX = 0.35;
 
-      for (let i = 0; i < COUNT; i++) {
-        const char = Math.random() > 0.5 ? '1' : '0';
-        const geo = new THREE.TextGeometry(char, {
-          font: font,
-          size: 2,      // digit size
-          height: 0.1,  // extrusion thickness
-          curveSegments: 2
-        });
+    const sprites = [];
+    for (let i = 0; i < COUNT; i++) {
+      const tex = Math.random() > 0.5 ? tex1 : tex0;
+      const s = makeSprite(tex);
+      s.position.set(
+        (Math.random() - 0.5) * AREA,
+        Math.random() * (TOP - 10) + 10,
+        (Math.random() - 0.5) * AREA
+      );
+      s.userData.vy = -(Math.random() * (SPEED_MAX - SPEED_MIN) + SPEED_MIN);
+      s.userData.vx = (Math.random() - 0.5) * 0.05;
+      s.userData.vz = (Math.random() - 0.5) * 0.05;
+      sprites.push(s);
+      scene.add(s);
+    }
 
-        // center the geometry so rotations are clean
-        geo.computeBoundingBox();
-        const bbox = geo.boundingBox;
-        const centerX = (bbox.max.x - bbox.min.x) / 2;
-        const centerY = (bbox.max.y - bbox.min.y) / 2;
-        geo.translate(-centerX, -centerY, 0);
+    // Add slight fog for depth
+    scene.fog = new THREE.FogExp2(0x000000, 0.015);
 
-        const mesh = new THREE.Mesh(geo, mat);
+    // Camera subtle drift for parallax
+    let t = 0;
 
-        // random initial position
-        mesh.position.set(
-          (Math.random() - 0.5) * AREA,
-          Math.random() * (TOP - 10) + 10,
-          (Math.random() - 0.5) * AREA
-        );
-
-        // subtle random rotation for variety
-        mesh.rotation.set(
-          Math.random() * 0.2 - 0.1,
-          Math.random() * 0.2 - 0.1,
-          Math.random() * 0.2 - 0.1
-        );
-
-        // assign a fall speed and slight horizontal drift
-        mesh.userData.vy = -(Math.random() * (SPEED_MAX - SPEED_MIN) + SPEED_MIN);
-        mesh.userData.vx = (Math.random() - 0.5) * 0.02;
-        mesh.userData.vz = (Math.random() - 0.5) * 0.02;
-
-        digits.push(mesh);
-        scene.add(mesh);
-      }
-
-      animate();
-    });
-
-    // Animation loop
     function animate() {
       requestAnimationFrame(animate);
 
-      // gentle scene rotation for depth feel
-      scene.rotation.y += 0.0005;
+      t += 0.002;
+      camera.position.x = Math.sin(t) * 5;
+      camera.position.y = Math.cos(t * 0.7) * 3;
+      camera.lookAt(0, 0, 0);
 
-      // update each digit position
-      for (const d of digits) {
-        d.position.y += d.userData.vy;
-        d.position.x += d.userData.vx;
-        d.position.z += d.userData.vz;
+      for (const s of sprites) {
+        s.position.y += s.userData.vy;
+        s.position.x += s.userData.vx * 0.5;
+        s.position.z += s.userData.vz * 0.5;
 
-        // optional subtle spin
-        d.rotation.y += 0.002;
+        // billboard always faces camera (Sprite does this automatically)
 
-        // reset when below threshold
-        if (d.position.y < BOTTOM) {
-          d.position.y = TOP;
-          d.position.x = (Math.random() - 0.5) * AREA;
-          d.position.z = (Math.random() - 0.5) * AREA;
-          d.userData.vy = -(Math.random() * (SPEED_MAX - SPEED_MIN) + SPEED_MIN);
-          d.userData.vx = (Math.random() - 0.5) * 0.02;
-          d.userData.vz = (Math.random() - 0.5) * 0.02;
+        if (s.position.y < BOTTOM) {
+          s.position.y = TOP;
+          s.position.x = (Math.random() - 0.5) * AREA;
+          s.position.z = (Math.random() - 0.5) * AREA;
+          s.userData.vy = -(Math.random() * (SPEED_MAX - SPEED_MIN) + SPEED_MIN);
+          s.userData.vx = (Math.random() - 0.5) * 0.05;
+          s.userData.vz = (Math.random() - 0.5) * 0.05;
         }
       }
 
       renderer.render(scene, camera);
     }
+    animate();
 
-    // Handle resize
+    // Resize handling
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
