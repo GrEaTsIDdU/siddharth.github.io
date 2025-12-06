@@ -69,6 +69,7 @@
     <div class="glitch-container">
       <img id="skullImg" class="glitch-img" src="websku.png" alt="Skull by Siddharth" draggable="false" />
     </div>
+    <!-- Button now calls the correct function -->
     <button class="action-btn" onclick="music()">music</button>
     <section id="about">
       <h2>About Me</h2>
@@ -83,6 +84,7 @@
   <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
 
   <script>
+    // Function name matches the button
     function music() {
       const skull = document.getElementById('skullImg');
       const sound = document.getElementById('collapseSound');
@@ -176,6 +178,4 @@
         s.position.z += s.userData.vz * 0.5;
         if (s.position.y < BOTTOM) {
           s.position.y = TOP;
-          s.position.x = (Math.random() - 0.5) * AREA;
-          s.position.z = (Math.random() - 0.5) * AREA;
-          s.userData.vy = -(Math.random() * (SPEED_MAX - SPEED_MIN) + SPEED
+         
