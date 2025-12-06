@@ -7,7 +7,6 @@
   <meta name="description" content="Experimental tactical web art by Siddharth S Nair." />
   <link rel="icon" href="websku.png" type="image/png" />
 
-  <!-- Three.js core -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
@@ -22,36 +21,41 @@
       --font-main: 'Fira Mono', 'Menlo', 'Consolas', monospace;
     }
 
-    html, body {
+    html {
       height: 100%;
-      margin: 0;
-      padding: 0;
-      background: var(--bg);
-      font-family: var(--font-main);
-      color: var(--primary);
-      overflow-x: hidden;
+      background: var(--bg); /* site background lives here */
     }
-
     body {
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: transparent; /* allow canvas to show through */
+      font-family: var(--font-main);
+      color: var(--primary);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       position: relative;
       padding-top: 3rem;
+      overflow-x: hidden;
     }
 
-    /* Background container holds WebGL canvas behind content */
+    /* WebGL canvas behind content */
     #bg {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: -1;
+      z-index: 0; /* not negative */
       background: #000;
     }
 
-    .header { text-align: center; margin-bottom: 2rem; z-index: 2; }
+    .header, main, footer {
+      position: relative;
+      z-index: 1; /* ensure content is above canvas */
+    }
+
+    .header { text-align: center; margin-bottom: 2rem; }
     .header h1 {
       font-size: 3rem;
       font-weight: 900;
@@ -151,9 +155,8 @@
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 
-  <!-- Three.js 3D bitstream using sprite digits (no external font JSON) -->
+  <!-- 3D bitstream using sprite digits -->
   <script>
-    // Setup renderer
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 80;
@@ -163,20 +166,20 @@
     renderer.setClearColor(0x000000, 1);
     const bg = document.getElementById('bg');
     bg.appendChild(renderer.domElement);
-    renderer.domElement.style.position = 'fixed';
-    renderer.domElement.style.top = 0;
-    renderer.domElement.style.left = 0;
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-    renderer.domElement.style.zIndex = -1;
-    renderer.domElement.style.pointerEvents = 'none';
 
-    // Create a canvas-based texture for digits to avoid font loader CORS
+    // Ensure canvas sits behind content but not behind body background
+    Object.assign(renderer.domElement.style, {
+      position: 'fixed',
+      top: 0, left: 0,
+      width: '100%', height: '100%',
+      zIndex: 0,
+      pointerEvents: 'none'
+    });
+
     function createDigitTexture(char, color = '#ff6f00') {
       const size = 128;
       const c = document.createElement('canvas');
-      c.width = size;
-      c.height = size;
+      c.width = size; c.height = size;
       const ctx = c.getContext('2d');
       ctx.clearRect(0, 0, size, size);
       ctx.fillStyle = 'rgba(0,0,0,0)';
@@ -193,23 +196,18 @@
       return tex;
     }
 
-    const tex1 = createDigitTexture('1', '#ff6f00'); // Bhagva
+    const tex1 = createDigitTexture('1', '#ff6f00');
     const tex0 = createDigitTexture('0', '#ff6f00');
 
     function makeSprite(charTex) {
       const material = new THREE.SpriteMaterial({ map: charTex, transparent: true });
       const sprite = new THREE.Sprite(material);
-      sprite.scale.set(4, 4, 1); // size of digit
+      sprite.scale.set(4, 4, 1);
       return sprite;
     }
 
-    // Create digit sprites
-    const COUNT = 300;
-    const AREA = 140;
-    const TOP = 90;
-    const BOTTOM = -90;
-    const SPEED_MIN = 0.12;
-    const SPEED_MAX = 0.35;
+    const COUNT = 300, AREA = 140, TOP = 90, BOTTOM = -90;
+    const SPEED_MIN = 0.12, SPEED_MAX = 0.35;
 
     const sprites = [];
     for (let i = 0; i < COUNT; i++) {
@@ -227,15 +225,11 @@
       scene.add(s);
     }
 
-    // Add slight fog for depth
     scene.fog = new THREE.FogExp2(0x000000, 0.015);
 
-    // Camera subtle drift for parallax
     let t = 0;
-
     function animate() {
       requestAnimationFrame(animate);
-
       t += 0.002;
       camera.position.x = Math.sin(t) * 5;
       camera.position.y = Math.cos(t * 0.7) * 3;
@@ -245,9 +239,6 @@
         s.position.y += s.userData.vy;
         s.position.x += s.userData.vx * 0.5;
         s.position.z += s.userData.vz * 0.5;
-
-        // billboard always faces camera (Sprite does this automatically)
-
         if (s.position.y < BOTTOM) {
           s.position.y = TOP;
           s.position.x = (Math.random() - 0.5) * AREA;
@@ -257,12 +248,10 @@
           s.userData.vz = (Math.random() - 0.5) * 0.05;
         }
       }
-
       renderer.render(scene, camera);
     }
     animate();
 
-    // Resize handling
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
