@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Siddharth | Glitch Skull</title>
-  <meta name="description" content="Glitch Skull - Tactical creative web art by Siddharth." />
+  <meta name="description" content="Glitch Skull - Tactical portfolio by Siddharth." />
   <link rel="icon" href="websku.png" type="image/png" />
   <style>
     :root {
@@ -12,171 +12,109 @@
       --bg: #0a0a0d;
       --accent1: #ff0055;
       --accent2: #00d4ff;
-      --skull-size: clamp(240px, 40vw, 420px);
-      --btn-bg: linear-gradient(90deg, var(--primary) 0%, var(--accent2) 100%);
-      --btn-shadow: 0 3px 24px 0 rgba(0,255,153,0.25);
       --font-main: 'Fira Mono', 'Menlo', 'Consolas', monospace;
     }
     html, body {
-      height: 100%;
       margin: 0;
       padding: 0;
       background: var(--bg);
-    }
-    body {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       font-family: var(--font-main);
       color: var(--primary);
-      overflow-x: hidden;
-      position: relative;
-      animation: fadeIn 1.2s ease-out both;
-    }
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.95) translateY(20px);}
-      100% { opacity: 1; transform: none;}
     }
     .header {
       text-align: center;
-      margin-bottom: 2rem;
-      z-index: 2;
+      margin-top: 2rem;
     }
     .header h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      margin: 0;
-      background: linear-gradient(90deg, var(--primary), var(--accent2) 60%, var(--accent1) 100%);
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      letter-spacing: 0.05em;
-      filter: drop-shadow(0 1px 8px rgba(0,255,153,0.25));
-      animation: glow 2.5s infinite alternate;
-      cursor: pointer;
-      user-select: none;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
     }
     .header p {
-      margin: 1rem 0 0 0;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       color: #b2ffe0;
-      opacity: 0.9;
       font-weight: 500;
-      text-shadow: 0 1px 2px #000a;
-    }
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 8px var(--primary)); }
-      to   { filter: drop-shadow(0 0 24px var(--accent2)); }
+      margin: 0;
     }
     .glitch-container {
-      position: relative;
-      width: var(--skull-size);
-      height: var(--skull-size);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 2rem;
+      width: 320px;
+      margin: 2rem auto;
       border-radius: 1rem;
-      box-shadow: 0 8px 48px 0 #00ff9922, 0 0 0 1.5px #00ff9944 inset;
-      background: linear-gradient(135deg, #1a1a1a 80%, #2a2a3a 100%);
-      overflow: hidden;
+      background: #1a1a1a;
+      padding: 1rem;
+      box-shadow: 0 0 0 1px #00ff9944;
     }
     .glitch-img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
       object-fit: contain;
-      animation: glitch-skull-main 0.75s infinite linear alternate;
-      filter: drop-shadow(0 2px 12px #00ff9955);
-    }
-    @keyframes glitch-skull-main {
-      0%   { filter: none; }
-      25%  { filter: contrast(2) brightness(1.2) hue-rotate(15deg);}
-      50%  { filter: hue-rotate(24deg) invert(0.2);}
-      75%  { filter: grayscale(0.4) brightness(1.4);}
-      100% { filter: none; }
     }
     .action-btn {
-      display: inline-block;
-      padding: 0.8rem 2.4rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      border: none;
-      border-radius: 2rem;
-      background: var(--btn-bg);
+      display: block;
+      margin: 1.5rem auto;
+      padding: 0.6rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 600;
+      background: var(--accent2);
       color: #111;
-      box-shadow: var(--btn-shadow);
+      border: none;
+      border-radius: 1.5rem;
       cursor: pointer;
-      transition: transform 0.2s;
     }
-    .action-btn:active { transform: scale(0.95); }
-    /* About Section */
     #about {
-      max-width: 720px;
+      max-width: 640px;
       margin: 2rem auto;
-      padding: 1.5rem;
+      padding: 1rem;
       background: #151515;
       border-radius: 1rem;
-      box-shadow: 0 0 24px rgba(0,255,153,0.15);
       text-align: center;
     }
     #about h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
+      font-size: 1.6rem;
       color: var(--accent2);
+      margin-bottom: 0.5rem;
     }
     #about p {
-      font-size: 1.1rem;
-      line-height: 1.6;
+      font-size: 1.05rem;
       color: #e0ffe0;
+      margin: 0;
     }
     footer {
-      text-align:center;
-      margin-top:2rem;
-      color:#b2ffe055;
-      font-size:.95rem;
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 0.9rem;
+      color: #b2ffe055;
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1 title="Glitch Skull">Glitch Skull</h1>
-    <p><span style="color:var(--accent1); font-weight:600;">Siddharth</span> — Creative Coder 👾</p>
+    <h1>Glitch Skull</h1>
+    <p>Siddharth — Creative Coder</p>
   </div>
   <main>
     <div class="glitch-container">
-      <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull by Siddharth" draggable="false" />
+      <img id="skullImg" class="glitch-img" src="websku.png" alt="Glitched Skull by Siddharth" />
     </div>
     <button class="action-btn" onclick="collapseSkull()">Collapse Skull</button>
-    <!-- About Me Section -->
     <section id="about">
       <h2>About Me</h2>
       <p>I am an ECE engineer exploring Web Development to showcase my projects!</p>
     </section>
   </main>
   <footer>
-    &copy; <span id="year"></span> Siddharth. Crafted with ❤️
+    &copy; <span id="year"></span> Siddharth. Crafted with precision.
   </footer>
   <script>
     function collapseSkull() {
       const skull = document.getElementById('skullImg');
-      const sound = document.getElementById('collapseSound');
-      if (sound && sound.readyState >= 2) {
-        sound.currentTime = 0;
-        sound.play().catch(() => {});
-      }
-      skull.classList.add('collapse');
-      skull.addEventListener('animationend', function handler() {
-        skull.classList.remove('collapse');
-        skull.removeEventListener('animationend', handler);
-      });
+      skull.style.transform = 'scale(0.9)';
+      setTimeout(() => skull.style.transform = 'scale(1)', 300);
     }
-    document.querySelector('.header h1').addEventListener('click', () => {
-      collapseSkull();
-    });
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-  <audio id="collapseSound" src="punishertitle.mp3" preload="auto"></audio>
 </body>
 </html>
